@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Folder Organizer</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+            <h1>📁 AI Folder Organizer</h1>
+
+            <p>
+                Upload a file and let AI automatically organize it
+                into the correct category.
+            </p>
+        </header>
+
+
+        <!-- Upload Section -->
+        <section class="upload-section">
+
+            <h2>Upload Your File</h2>
+
+            <input type="file" id="fileInput">
+
+            <button onclick="organizeFile()">
+                Organize File
+            </button>
+
+        </section>
+
+
+        <!-- Result -->
+        <div id="result"></div>
+
+
+        <!-- Categories -->
+        <section class="categories">
+
+            <h2>📂 Organized Categories</h2>
+
+            <div class="category-grid">
+
+                {% for category, files in organized_files.items() %}
+
+                <div class="category-card"
+                     onclick="toggleFolder('{{ category }}')">
+
+                    <div class="folder-icon">📁</div>
+
+                    <h3>{{ category }}</h3>
+
+                    <p>
+                        {{ files|length }} file(s)
+                    </p>
+
+                    <!-- Files inside folder -->
+                    <div id="folder-{{ category }}"
+                         class="folder-content">
+
+                        {% if files %}
+
+                        <ul class="file-list">
+
+                            {% for file in files %}
+
+                            <li>
+                                📄 {{ file }}
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                        {% else %}
+
+                        <p>No files yet.</p>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- JavaScript -->
+    <script>
+
+        function toggleFolder(category) {
+
+            const folder =
+                document.getElementById("folder-" + category);
+
+            folder.classList.toggle("show");
+
+        }
+
+
+        async function organizeFile() {
+
+            const input =
+                document.getElementById("fileInput");
+
+            const result =
+                document.getElementById("result");
+
+
+            if (input.files.length === 0) {
+
+                result.innerHTML = `
+                    <div class="error">
+                        Please select a file first.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            const formData = new FormData();
+
+            formData.append(
+                "file",
+                input.files[0]
+            );
+
+
+            result.innerHTML = `
+                <div class="loading">
+                    🤖 AI is analyzing your file...
+                </div>
+            `;
+
+
+            try {
+
+                const response =
+                    await fetch("/organize", {
+
+                        method: "POST",
+
+                        body: formData
+
+                    });
+
+
+                const data =
+                    await response.json();
+
+
+                if (data.status === "Organized") {
+
+                    result.innerHTML = `
+                        <div class="success">
+
+                            <h2>
+                                ✅ File Organized Successfully!
+                            </h2>
+
+                            <p>
+                                <strong>File:</strong>
+                                ${data.filename}
+                            </p>
+
+                            <p>
+                                <strong>Category:</strong>
+                                📁 ${data.category}
+                            </p>
+
+                            <p>
+                                <strong>AI Confidence:</strong>
+                                ${data.confidence}%
+                            </p>
+
+                            <p>
+                                ${data.message}
+                            </p>
+
+                        </div>
+                    `;
+
+
+                    // Refresh page to show new file
+                    setTimeout(function() {
+
+                        window.location.reload();
+
+                    }, 1000);
+
+
+                } else {
+
+                    result.innerHTML = `
+                        <div class="warning">
+
+                            <h2>
+                                ⚠️ File Not Moved
+                            </h2>
+
+                            <p>
+                                <strong>File:</strong>
+                                ${data.filename}
+                            </p>
+
+                            <p>
+                                <strong>Prediction:</strong>
+                                ${data.category}
+                            </p>
+
+                            <p>
+                                <strong>Confidence:</strong>
+                                ${data.confidence}%
+                            </p>
+
+                            <p>
+                                ${data.message}
+                            </p>
+
+                        </div>
+                    `;
+                }
+
+
+            } catch (error) {
+
+                result.innerHTML = `
+                    <div class="error">
+
+                        ❌ Unable to connect to the server.
+
+                        Make sure Flask is running.
+
+                    </div>
+                `;
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

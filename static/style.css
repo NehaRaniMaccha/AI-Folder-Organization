@@ -1,0 +1,233 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #222;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+/* Header */
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 17px;
+    color: #666;
+}
+
+
+/* Upload Section */
+
+.upload-section {
+    background: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+.upload-section h2 {
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    margin: 15px;
+    font-size: 15px;
+}
+
+
+/* Button */
+
+button {
+    display: block;
+    margin: 15px auto;
+    padding: 13px 30px;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+
+/* Result */
+
+#result {
+    margin-bottom: 30px;
+}
+
+.success,
+.warning,
+.error,
+.loading {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    background: white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.success {
+    border-left: 6px solid green;
+}
+
+.warning {
+    border-left: 6px solid orange;
+}
+
+.error {
+    border-left: 6px solid red;
+}
+
+.loading {
+    border-left: 6px solid #555;
+}
+
+
+/* Categories */
+
+.categories {
+    margin-top: 30px;
+}
+
+.categories h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+
+/* Category Grid */
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+
+/* Clickable Folder */
+
+.category-card {
+    background: white;
+    padding: 25px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    cursor: pointer;
+
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Folder Icon */
+
+.folder-icon {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+
+/* Category Name */
+
+.category-card h3 {
+    font-size: 21px;
+    margin: 10px 0;
+}
+
+.category-card > p {
+    color: #666;
+    font-size: 14px;
+}
+
+
+/* Files inside folder */
+
+.folder-content {
+    display: none;
+
+    margin-top: 15px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #ddd;
+}
+
+
+/* Show files when clicked */
+
+.folder-content.show {
+    display: block;
+}
+
+
+/* File List */
+
+.file-list {
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+
+    text-align: left;
+}
+
+.file-list li {
+    padding: 8px;
+
+    margin-bottom: 6px;
+
+    background: #f4f7fb;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    word-break: break-word;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+
+}
